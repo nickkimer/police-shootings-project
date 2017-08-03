@@ -18,3 +18,24 @@ To deal with other missing values in the data set, several variables received an
 
 [Fleeing: 637; Non-Fleeing: 1428; NA: 35]
 
+### Data Manipulation
+In efforts to try to boost model performance and increase the size of the feature space, census data was merged onto the original Data.
+
+
+
+## Results
+
+The C5.0 algorithm, without the additional merged demographic data, had a 10-fold cross-validated raw accuracy of 71.9%. With the additional data the 10-fold cross-validated raw accuracy increased 1% to 72.9%. The model with the highest testing accuracy from the original data is the following: 
+
+
+Three variables (sign of mental illness, the type of weapon, and the age groups) were the variables of the greatest importance in the decision tree. This model had an accuracy of 75%. 
+The best model from the demographic data had an accuracy of 79% and had a tree size of 16. 
+
+The second model with the additional census data is slightly better than the first model; however, the additional percent in accuracy probably does not warrant adding the additional variables. The model is more susceptible overfitting. Therefore, the simpler model is probably the better model in this case. 
+
+The next model is Naïve Bayes. Naïve Bayes is a conditional probability model that is made up of simple probabilistic classifiers. Naïve Bayes, in theory, seems to be a useful aspect in predicting whether or not a suspect will flee. The r function NaiveBayes in the package e1071. Using the original data set of police shooting, an accuracy of 67.7 % was achieved. Adding the additional demographics to the data set, gave an accuracy of 67.5%. The accuracy of these two data sets are identical. This could be due to the small sample of data but a large number of predictors. Additionally, Naïve Bayes assumes all predictors are independent of each other. However, some variables such as threat level and gender could be related. These aspects make it difficult to support the continued use of the Naive Bayes classifier. 
+
+The logistic regression model builds in efforts to classify the observations utilized both datasets and followed a similar process. The models were trained and tested using 10-fold cross validation and backward stepwise regression to find the best model with the highest classification accuracy. In doing so with the original dataset without any county demographic data, the final model with the highest accuracy rate was flee ~ signs of mental illness + age + armed. The final equation itself was 0.3095 + 1.1097*signs of mental illness(True) + 1.0419*age(45-64) + 1.5804*age(65+) - 0.4869*age(Less than 18) + 0.2139*age(unknown) + 1.0556*armed(knife) + 0.9589*armed(other) + 0.2360*armed(toyweapon) - 0.1246*armed(unarmed) - 0.0200*armed(undetermined) - 1.7863*armed(vehicle). From this it is evident that the largest effect in terms of magnitude in both directions of effect for log odds are the age of 65+ and being armed with a vehicle. The 10-fold cross-validation classification averaged accuracy rate was 66.108%.
+
+The same process was repeated after adding in the demographic data and the model with the highest cross validated accuracy was a model containing race + signs of mental illness + body camera. The final modeled equation came out to -0.0832*raceA -1.0279*raceB - 0.8814*raceH - 1.0363*raceN - 0.8163*raceO - 0.7807*raceW + 1.313*signs of mental illness(True), with an average cross validated accuracy rate of 68.247%. Again this model highlights the importance of signs of mental illness in determining whether or not an observation is classified as flee or not fleeing in the police encounter. In the grand scheme of things, the added variables only came out to a marginal boost in classification accuracy.
+
