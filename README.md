@@ -16,7 +16,7 @@ Age groups were also re-categorized based on how the US census groups ages; the 
 
 To deal with other missing values in the data set, several variables received an additional category labeled “missing.” The missing data was limited to five variables (Gender, Age Groups, Race, Weapon Type, and Flee). Each of these categories were refactored to include the new “missing” level except for the Flee variable (the rows with missing data were removed). The distribution of the newly reclassified predictor is the following:  
 
-![Alt Text](https://rawgithub.com/nickkimer/police-shootings-project/gh-pages/fleeing.png)
+![Alt Text](https://rawgithub.com/nickkimer/police-shootings-project/gh-pages/fleeing.PNG)
 
 
 ### Data Manipulation
@@ -69,7 +69,7 @@ m2 = merge(m,data2,by="full_county_name",all.x=TRUE)
 
 The C5.0 algorithm, without the additional merged demographic data, had a 10-fold cross-validated raw accuracy of 71.9%. With the additional data the 10-fold cross-validated raw accuracy increased 1% to 72.9%. The model with the highest testing accuracy from the original data is the following: 
 
-![Alt Text](https://rawgithub.com/nickkimer/police-shootings-project/gh-pages/treediagram.png)
+![Alt Text](https://rawgithub.com/nickkimer/police-shootings-project/gh-pages/treediagram.PNG)
 
 Three variables (sign of mental illness, the type of weapon, and the age groups) were the variables of the greatest importance in the decision tree. This model had an accuracy of 75%. 
 The best model from the demographic data had an accuracy of 79% and had a tree size of 16. 
