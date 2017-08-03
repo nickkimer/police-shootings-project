@@ -16,17 +16,60 @@ Age groups were also re-categorized based on how the US census groups ages; the 
 
 To deal with other missing values in the data set, several variables received an additional category labeled “missing.” The missing data was limited to five variables (Gender, Age Groups, Race, Weapon Type, and Flee). Each of these categories were refactored to include the new “missing” level except for the Flee variable (the rows with missing data were removed). The distribution of the newly reclassified predictor is the following:  
 
-[Fleeing: 637; Non-Fleeing: 1428; NA: 35]
+![Alt Text](https://rawgithub.com/nickkimer/police-shootings-project/gh-pages/fleeing.png)
+
 
 ### Data Manipulation
 In efforts to try to boost model performance and increase the size of the feature space, census data was merged onto the original Data.
 
+```
+######### County Demographic DATA MERGING
+
+#Read in all demographic data
+
+# Demographic data acquired from Economic Research Searvice "Unemployment and median household income for the U.S., States, and counties, 2007-15"
+# https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data.aspx
+# The dataset of US Cities with their corresponding counties was found at this linke
+# https://github.com/grammakov/USA-cities-and-states
+
+data1 = read.csv("C:/Users/Nick/Desktop/DSI Spring 2017/us_cities_states_counties.csv",header=TRUE)
+data2 = read.csv("C:/Users/Nick/Desktop/DSI Spring 2017/fips_demographic_police.csv",header=TRUE)
+police.data = read.csv("C:/Users/Nick/Desktop/DSI Spring 2017/fatal-police-shootings-data.csv",header=TRUE)
+
+#Create new column for the city name in the format we need - "Charlottesville, VA"
+police.data$full_city_name = paste(police.data$city,", ",police.data$state,sep="")
+
+#Grab the unique city and county pairs 
+subset = data1[,c("full_city_name","full_county_name")]
+subset = unique(subset)
+
+#Merge onto the police data the name of the county
+m = merge(police.data,subset,by="full_city_name",all.x=TRUE)
+m = subset(m, !duplicated(name))
+
+#fill in washington,dc as the county name for unread labels 
+
+for(i in 1:nrow(m)){
+  if(m$full_city_name[i] == "Washington, DC"){
+    m$full_county_name[i] = "Washington, DC"
+  }
+}
+
+#Merge onto the previous dataset the demographic data by county
+m2 = merge(m,data2,by="full_county_name",all.x=TRUE)
+
+#Export final dataset as CSV
+
+#write.csv(m2,"C:/Users/Nick/Desktop/DSI Spring 2017/police_data_demographics_merged.csv",row.names = FALSE)
+
+```
 
 
 ## Results
 
 The C5.0 algorithm, without the additional merged demographic data, had a 10-fold cross-validated raw accuracy of 71.9%. With the additional data the 10-fold cross-validated raw accuracy increased 1% to 72.9%. The model with the highest testing accuracy from the original data is the following: 
 
+![Alt Text](https://rawgithub.com/nickkimer/police-shootings-project/gh-pages/treediagram.png)
 
 Three variables (sign of mental illness, the type of weapon, and the age groups) were the variables of the greatest importance in the decision tree. This model had an accuracy of 75%. 
 The best model from the demographic data had an accuracy of 79% and had a tree size of 16. 
