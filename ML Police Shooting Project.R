@@ -1,6 +1,5 @@
 # Nick Kim, Gabriel Rushin, Cody Stancil
 # Machine Learning Project - Police Shootings Data from Washington Post
-# Prof. Abby Flower - DSI 6016 Machine Learning
 # 3/3/2017
 
 #######################################
